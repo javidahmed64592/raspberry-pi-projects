@@ -10,6 +10,7 @@ class RPiController:
     def __init__(self) -> None:
         print_system_msg("Initialising RPiController...")
         self._mode = GPIO.BCM
+        self._running = False
 
     def _setup(self) -> None:
         print_system_msg("Running setup...")
@@ -30,9 +31,11 @@ class RPiController:
         print_system_msg("Ready to run!")
 
     def run(self) -> None:
+        self._running = True
         try:
             print_system_msg("Running program!")
             self.main()
         except KeyboardInterrupt:
             print_system_msg("Shutting down!")
+            self._running = False
             self._cleanup()

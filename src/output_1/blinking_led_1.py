@@ -30,10 +30,14 @@ class BlinkingLED(RPiController):
         super()._cleanup()
 
     def main(self) -> None:
-        print_system_msg("...LED ON")
-        self._output_pin(self._led_pin, "low")
-        time.sleep(0.5)
+        while self._running:
+            if not self._running:
+                break
 
-        print_system_msg("LED OFF...")
-        self._output_pin(self._led_pin, "high")
-        time.sleep(0.5)
+            print_system_msg("...LED ON")
+            self._output_pin(self._led_pin, "low")
+            time.sleep(0.5)
+
+            print_system_msg("LED OFF...")
+            self._output_pin(self._led_pin, "high")
+            time.sleep(0.5)
