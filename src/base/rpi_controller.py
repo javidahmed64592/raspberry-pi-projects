@@ -19,7 +19,7 @@ class RPiController:
         print_system_msg("Cleaning up GPIO...")
         GPIO.cleanup()
 
-    def _setup_pin(self, pin_number: int, mode: str, initial: str) -> None:
+    def _setup_pin(self, pin_number: int, mode: str, initial: str) -> int:
         GPIO.setup(pin_number, self.MODES[mode], initial=self.VALUES[initial])
         return pin_number
 

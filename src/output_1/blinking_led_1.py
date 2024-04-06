@@ -10,22 +10,20 @@ from src.helpers.general import print_system_msg
 class BlinkingLED(RPiController):
     def __init__(self) -> None:
         super().__init__()
+        self._led_pin: int
 
     @classmethod
-    def create(cls, led_pin: int) -> BlinkingLED:
+    def create(cls) -> BlinkingLED:
         _app = cls()
-        _app._setup(led_pin=led_pin)
+        _app._setup()
         return _app
 
     @classmethod
     def app(cls) -> BlinkingLED:
         led_pin = 17
-        _app = cls.create(led_pin)
+        _app = cls.create()
+        _app._led_pin = _app._setup_pin(pin_number=led_pin, mode="out", initial="high")
         return _app
-
-    def _setup(self, led_pin: int) -> None:
-        super()._setup()
-        self._led_pin = self._setup_pin(pin_number=led_pin, mode="out", initial="high")
 
     def _cleanup(self) -> None:
         self._output_pin(self._led_pin, "high")
