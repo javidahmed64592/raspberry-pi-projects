@@ -17,6 +17,12 @@ class BlinkingLED(RPiController):
         _app._setup(led_pin=led_pin)
         return _app
 
+    @classmethod
+    def app(cls) -> BlinkingLED:
+        led_pin = 17
+        _app = cls.create(led_pin)
+        return _app
+
     def _setup(self, led_pin: int) -> None:
         super()._setup()
         self._led_pin = self._setup_pin(pin_number=led_pin, mode="out", initial="high")
@@ -33,9 +39,3 @@ class BlinkingLED(RPiController):
         print_system_msg("LED OFF...")
         self._output_pin(self._led_pin, "high")
         time.sleep(0.5)
-
-
-if __name__ == "__main__":
-    led_pin = 17
-    app = BlinkingLED.create(led_pin)
-    app.run()
