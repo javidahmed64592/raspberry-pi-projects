@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO  # type: ignore
 
 from src.helpers.general import print_system_msg
 
