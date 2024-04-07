@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
 import time
@@ -23,7 +22,7 @@ class BlinkingLED(RPiController):
         self._output_pin(self._led_pin, "high")
         super()._cleanup()
 
-    def main(self) -> None:
+    def _main(self) -> None:
         while self._running:
             print_system_msg("...LED ON")
             self._output_pin(self._led_pin, "low")

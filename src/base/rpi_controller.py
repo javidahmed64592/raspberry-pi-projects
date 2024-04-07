@@ -35,14 +35,14 @@ class RPiController:
     def _output_pin(self, pin_number: int, value: str) -> None:
         GPIO.output(pin_number, self.VALUES[value])
 
-    def main(self) -> None:
+    def _main(self) -> None:
         print_system_msg("Ready to run!")
 
     def run(self) -> None:
         self._running = True
         try:
             print_system_msg("Running program!")
-            self.main()
+            self._main()
         except KeyboardInterrupt:
             print_system_msg("Shutting down!")
             self._running = False
