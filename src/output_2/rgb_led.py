@@ -53,12 +53,16 @@ class RGBLED(RPiController):
         outputs = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
         num_iters = 20000
 
-        for i in range(num_iters):
+        for _ in range(num_iters):
             random_choice = np.random.randint(low=0, high=len(inputs))
             self._train_nn(inputs[random_choice], outputs[random_choice])
 
+        print_system_msg(f"\nTraining complete!")
         while self._running:
-            vals = self._nn.feedforward(np.random.randint(low=0, high=2, size=(3)))
+            r_val = int(input("Enter R: "))
+            g_val = int(input("Enter G: "))
+            b_val = int(input("Enter B: "))
+            vals = self._nn.feedforward([r_val, g_val, b_val])
             self.setColor(vals)
             time.sleep(0.5)
 
