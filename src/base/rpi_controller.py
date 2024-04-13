@@ -10,12 +10,13 @@ from src.helpers.general import print_system_msg
 
 
 class RPiController:
-    MODES = {"in": GPIO.IN, "out": GPIO.OUT}
+    BOARD_MODES = {"bcm": GPIO.BCM, "board": GPIO.BOARD}
+    PIN_MODES = {"in": GPIO.IN, "out": GPIO.OUT}
     VALUES = {"low": GPIO.LOW, "high": GPIO.HIGH}
 
     def __init__(self) -> None:
         print_system_msg("Initialising RPiController...")
-        self._mode = GPIO.BCM
+        self._board_mode: str
         self._running = False
         self._nn: NeuralNetwork
 
@@ -27,14 +28,14 @@ class RPiController:
 
     def _setup(self) -> None:
         print_system_msg("Running setup...")
-        GPIO.setmode(self._mode)
+        GPIO.setmode(self.BOARD_MODES[self._board_mode])
 
     def _cleanup(self) -> None:
         print_system_msg("Cleaning up GPIO...")
         GPIO.cleanup()
 
     def _setup_pin(self, pin_number: int, mode: str, initial: str) -> int:
-        GPIO.setup(pin_number, self.MODES[mode], initial=self.VALUES[initial])
+        GPIO.setup(pin_number, self.PIN_MODES[mode], initial=self.VALUES[initial])
         return pin_number
 
     def _output_pin(self, pin_number: int, value: str) -> None:
