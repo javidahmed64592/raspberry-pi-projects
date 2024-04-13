@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import RPi.GPIO as GPIO  # type: ignore
+from neural_network.neural_network import NeuralNetwork
 
 from src.helpers.general import print_system_msg
 
@@ -13,6 +14,7 @@ class RPiController:
         print_system_msg("Initialising RPiController...")
         self._mode = GPIO.BCM
         self._running = False
+        self._nn: NeuralNetwork
 
     @classmethod
     def create(cls) -> RPiController:
