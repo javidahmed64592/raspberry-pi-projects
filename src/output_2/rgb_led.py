@@ -3,7 +3,9 @@ from __future__ import annotations
 import time
 from typing import cast
 
+import numpy as np
 import RPi.GPIO as GPIO  # type: ignore
+from neural_network.neural_network import NeuralNetwork
 
 from src.base.rpi_controller import RPiController
 from src.helpers.general import print_system_msg
@@ -36,6 +38,8 @@ class RGBLED(RPiController):
         _app._p_g.start(0)
         _app._p_b.start(0)
 
+        _app._nn = NeuralNetwork(3, 3, [4])
+
         return _app
 
     def _cleanup(self) -> None:
@@ -46,22 +50,19 @@ class RGBLED(RPiController):
 
     def _main(self) -> None:
         while self._running:
-            for color in COLOR:
-                self.setColor(color)
-                time.sleep(0.5)
+            vals = self._nn.feedforward(np.random.uniform(low=0, high=1, size=(3)))
+            self.setColor(vals)
+            time.sleep(0.5)
 
     @staticmethod
     def map_val(x, in_min, in_max, out_min, out_max):
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-    def setColor(self, color):
-        R_val = (color & 0xFF0000) >> 16
-        G_val = (color & 0x00FF00) >> 8
-        B_val = (color & 0x0000FF) >> 0
+    def setColor(self, vals):
 
-        R_val = RGBLED.map_val(R_val, 0, 255, 0, 100)
-        G_val = RGBLED.map_val(G_val, 0, 255, 0, 100)
-        B_val = RGBLED.map_val(B_val, 0, 255, 0, 100)
+        R_val = RGBLED.map_val(vals[0], 0, 1, 0, 100)
+        G_val = RGBLED.map_val(vals[1], 0, 1, 0, 100)
+        B_val = RGBLED.map_val(vals[2], 0, 1, 0, 100)
 
         self._p_r.ChangeDutyCycle(R_val)
         self._p_g.ChangeDutyCycle(G_val)
