@@ -35,6 +35,10 @@ class RPiController:
     def _output_pin(self, pin_number: int, value: str) -> None:
         GPIO.output(pin_number, self.VALUES[value])
 
+    def _pwm_pin(self, pin_number: int, frequency: int) -> GPIO.PWM:
+        pwm_pin = GPIO.PWM(pin_number, frequency)
+        return pwm_pin
+
     def _main(self) -> None:
         print_system_msg("Ready to run!")
 
