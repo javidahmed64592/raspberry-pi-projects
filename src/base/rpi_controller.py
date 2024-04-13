@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from typing import List
+
+import numpy as np
 import RPi.GPIO as GPIO  # type: ignore
 from neural_network.neural_network import NeuralNetwork
 
@@ -44,6 +47,10 @@ class RPiController:
     def _main(self) -> None:
         print_system_msg("Ready to run!")
 
+    def _train_nn(self, inputs: List[float], outputs: List[float]) -> None:
+        errors = self._nn.train(inputs, outputs)
+        print_system_msg(f"\rRMS: {RPiController.calculate_rms(errors)}", flush=True, end="")
+
     def run(self) -> None:
         self._running = True
         try:
@@ -53,3 +60,10 @@ class RPiController:
             print_system_msg("Shutting down!")
             self._running = False
             self._cleanup()
+
+    @staticmethod
+    def calculate_rms(errors):
+        squared = np.square(errors)
+        mean = np.average(squared)
+        rms = np.sqrt(mean)
+        return rms

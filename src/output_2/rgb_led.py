@@ -49,8 +49,16 @@ class RGBLED(RPiController):
         super()._cleanup()
 
     def _main(self) -> None:
+        inputs = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+        outputs = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+        num_iters = 20000
+
+        for i in range(num_iters):
+            random_choice = np.random.randint(low=0, high=len(inputs))
+            self._train_nn(inputs[random_choice], outputs[random_choice])
+
         while self._running:
-            vals = self._nn.feedforward(np.random.uniform(low=0, high=1, size=(3)))
+            vals = self._nn.feedforward(np.random.randint(low=0, high=2, size=(3)))
             self.setColor(vals)
             time.sleep(0.5)
 
@@ -59,7 +67,6 @@ class RGBLED(RPiController):
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
     def setColor(self, vals):
-
         R_val = RGBLED.map_val(vals[0], 0, 1, 0, 100)
         G_val = RGBLED.map_val(vals[1], 0, 1, 0, 100)
         B_val = RGBLED.map_val(vals[2], 0, 1, 0, 100)
