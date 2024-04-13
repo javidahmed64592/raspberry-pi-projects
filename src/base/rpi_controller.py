@@ -16,19 +16,18 @@ class RPiController:
 
     def __init__(self) -> None:
         print_system_msg("Initialising RPiController...")
-        self._board_mode: str
         self._running = False
         self._nn: NeuralNetwork
 
     @classmethod
-    def create(cls) -> RPiController:
+    def create(cls, board_mode: str) -> RPiController:
         _app = cls()
-        _app._setup()
+        _app._setup(board_mode)
         return _app
 
-    def _setup(self) -> None:
+    def _setup(self, board_mode: str) -> None:
         print_system_msg("Running setup...")
-        GPIO.setmode(self.BOARD_MODES[self._board_mode])
+        GPIO.setmode(self.BOARD_MODES[board_mode])
 
     def _cleanup(self) -> None:
         print_system_msg("Cleaning up GPIO...")

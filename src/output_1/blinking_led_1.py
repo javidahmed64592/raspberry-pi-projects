@@ -14,8 +14,7 @@ class BlinkingLED(RPiController):
 
     @classmethod
     def app(cls, led_pin: int) -> BlinkingLED:
-        _app = cast(BlinkingLED, cls.create())
-        _app._board_mode = "bcm"
+        _app = cast(BlinkingLED, cls.create("bcm"))
         _app._led_pin = _app._setup_pin(pin_number=led_pin, mode="out", initial="high")
         return _app
 

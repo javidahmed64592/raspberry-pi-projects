@@ -25,8 +25,7 @@ class RGBLED(RPiController):
 
     @classmethod
     def app(cls, red_pin: int, green_pin: int, blue_pin: int) -> RGBLED:
-        _app = cast(RGBLED, cls.create())
-        _app._board_mode = "bcm"
+        _app = cast(RGBLED, cls.create("bcm"))
         _app._red_pin = _app._setup_pin(pin_number=red_pin, mode="out", initial="high")
         _app._green_pin = _app._setup_pin(pin_number=green_pin, mode="out", initial="high")
         _app._blue_pin = _app._setup_pin(pin_number=blue_pin, mode="out", initial="high")

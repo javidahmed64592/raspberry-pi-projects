@@ -19,8 +19,7 @@ class LEDBar(RPiController):
 
     @classmethod
     def app(cls, led_pins: List[int]) -> LEDBar:
-        _app = cast(LEDBar, cls.create())
-        _app._board_mode = "board"
+        _app = cast(LEDBar, cls.create("board"))
         _app._led_pins = led_pins
 
         for pin in _app._led_pins:
