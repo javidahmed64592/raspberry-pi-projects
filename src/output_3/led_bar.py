@@ -5,6 +5,7 @@ from typing import List, cast
 
 import numpy as np
 from neural_network.neural_network import NeuralNetwork
+from numpy.typing import NDArray
 
 from src.base.rpi_controller import RPiController
 from src.helpers.general import print_system_msg
@@ -25,8 +26,7 @@ class LEDBar(RPiController):
         for pin in _app._led_pins:
             _app._setup_pin(pin_number=pin, mode="out", initial="low")
 
-        _app._nn = NeuralNetwork(3, 3, [4])
-
+        _app._nn = NeuralNetwork(5, len(_app._led_pins), [7])
         return _app
 
     def _cleanup(self) -> None:
@@ -36,29 +36,14 @@ class LEDBar(RPiController):
 
     def _main(self) -> None:
         while True:
-            self.oddLedBarGraph()
-            time.sleep(0.3)
-            self.evenLedBarGraph()
-            time.sleep(0.3)
-            self.allLedBarGraph()
+            vals = self._nn.feedforward(np.random.uniform(low=0, high=1, size=(5)))
+            vals = self._map_output(vals)
+            self._set_bars(vals)
             time.sleep(0.3)
 
-    def oddLedBarGraph(self):
-        for i in range(5):
-            j = i * 2
-            self._output_pin(self._led_pins[j], "high")
-            time.sleep(0.3)
-            self._output_pin(self._led_pins[j], "low")
+    def _set_bars(self, vals: List[bool]) -> None:
+        for index in range(len(self._led_pins)):
+            self._output_pin(self._led_pins[index], ["low", "high"][vals[index]])
 
-    def evenLedBarGraph(self):
-        for i in range(5):
-            j = i * 2 + 1
-            self._output_pin(self._led_pins[j], "high")
-            time.sleep(0.3)
-            self._output_pin(self._led_pins[j], "low")
-
-    def allLedBarGraph(self):
-        for i in self._led_pins:
-            self._output_pin(i, "high")
-            time.sleep(0.3)
-            self._output_pin(i, "low")
+    def _map_output(self, array: List[float]) -> List[bool]:
+        return [val > 0.5 for val in array]
