@@ -1,11 +1,11 @@
 from datetime import datetime
 
 
-def print_system_msg(msg: str) -> None:
+def print_system_msg(msg: str, flush: bool, end: str) -> None:
     """
     Print a message to the terminal.
 
     Parameters:
         msg (str): Message to print
     """
-    print(f"[{datetime.now().strftime('%d-%m-%G | %H:%M:%S')}] {msg}")
+    print(f"[{datetime.now().strftime('%d-%m-%G | %H:%M:%S')}] {msg}", flush=flush, end=end)
