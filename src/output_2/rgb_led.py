@@ -46,6 +46,9 @@ class RGBLED(RPiController):
         self._output_pin(self._red_pin, "high")
         self._output_pin(self._green_pin, "high")
         self._output_pin(self._blue_pin, "high")
+        self._p_r.stop()
+        self._p_g.stop()
+        self._p_b.stop()
         super()._cleanup()
 
     def _main(self) -> None:
