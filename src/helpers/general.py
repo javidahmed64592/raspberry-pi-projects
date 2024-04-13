@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def print_system_msg(msg: str, flush: bool, end: str) -> None:
+def print_system_msg(msg: str, flush: bool = False, end: str = "\n") -> None:
     """
     Print a message to the terminal.
 
