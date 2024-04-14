@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 "rpi.gpio" = "*"
+neural-network = {editable = true, git = "https://github.com/javidahmed64592/neural-network"}
+numpy = "*"
 
 [dev-packages]
 isort = "*"
