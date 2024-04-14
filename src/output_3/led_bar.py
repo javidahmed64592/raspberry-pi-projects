@@ -35,6 +35,26 @@ class LEDBar(RPiController):
         super()._cleanup()
 
     def _main(self) -> None:
+        inputs = [
+            [1.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 1.0],
+        ]
+        outputs = [
+            [1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0],
+        ]
+        num_iters = 10000
+
+        for _ in range(num_iters):
+            random_choice = np.random.randint(low=0, high=len(inputs))
+            self._train_nn(inputs[random_choice], outputs[random_choice])
+
         while True:
             vals = self._nn.feedforward(np.random.uniform(low=0, high=1, size=(5)))
             vals = self._map_output(vals)
