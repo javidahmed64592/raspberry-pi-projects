@@ -24,14 +24,14 @@ class LEDBar(RPiController):
         _app._led_pins = led_pins
 
         for pin in _app._led_pins:
-            _app._setup_pin(pin_number=pin, mode="out", initial="low")
+            _app._setup_pin(pin_number=pin, mode="out", initial="high")
 
         _app._nn = NeuralNetwork(5, len(_app._led_pins), [7])
         return _app
 
     def _cleanup(self) -> None:
         for pin in self._led_pins:
-            self._output_pin(pin_number=pin, value="low")
+            self._output_pin(pin_number=pin, value="high")
         super()._cleanup()
 
     def _main(self) -> None:
@@ -63,7 +63,7 @@ class LEDBar(RPiController):
 
     def _set_bars(self, vals: List[bool]) -> None:
         for index in range(len(self._led_pins)):
-            self._output_pin(self._led_pins[index], ["low", "high"][vals[index]])
+            self._output_pin(self._led_pins[index], ["high", "low"][vals[index]])
 
     def _map_output(self, array: List[float]) -> List[bool]:
         return [val > 0.5 for val in array]
