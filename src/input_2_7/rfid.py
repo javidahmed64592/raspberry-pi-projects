@@ -18,7 +18,7 @@ class RFID:
         return {"id": _id, "data": _text}
 
     def _write(self) -> None:
-        _text = str(input("Write data"))
+        _text = str(input("Enter data to write: "))
         print(system_msg("Place card on RFID to write."))
         self._reader.write(_text)
         print(system_msg("Data written successfully!"))
