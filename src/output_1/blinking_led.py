@@ -4,7 +4,7 @@ import time
 from typing import cast
 
 from src.base.rpi_controller import RPiController
-from src.helpers.general import print_system_msg
+from src.helpers.general import system_msg
 
 
 class BlinkingLED(RPiController):
@@ -24,10 +24,10 @@ class BlinkingLED(RPiController):
 
     def _main(self) -> None:
         while self._running:
-            print_system_msg("...LED ON")
+            print(system_msg("...LED ON"))
             self._output_pin(self._led_pin, "low")
             time.sleep(0.5)
 
-            print_system_msg("LED OFF...")
+            print(system_msg("LED OFF..."))
             self._output_pin(self._led_pin, "high")
             time.sleep(0.5)

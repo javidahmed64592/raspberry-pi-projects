@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from src.output_1.blinking_led_1 import BlinkingLED
+from src.output_1.blinking_led import BlinkingLED
 from src.output_2.rgb_led import RGBLED
 from src.output_3.led_bar import LEDBar
 

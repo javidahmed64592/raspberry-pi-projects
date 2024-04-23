@@ -1,21 +1,21 @@
 from __future__ import annotations
 
-from typing import List
+from typing import ClassVar
 
 import numpy as np
 import RPi.GPIO as GPIO  # type: ignore
 from neural_network.neural_network import NeuralNetwork
 
-from src.helpers.general import print_system_msg
+from src.helpers.general import system_msg
 
 
 class RPiController:
-    BOARD_MODES = {"bcm": GPIO.BCM, "board": GPIO.BOARD}
-    PIN_MODES = {"in": GPIO.IN, "out": GPIO.OUT}
-    VALUES = {"low": GPIO.LOW, "high": GPIO.HIGH}
+    BOARD_MODES: ClassVar = {"bcm": GPIO.BCM, "board": GPIO.BOARD}
+    PIN_MODES: ClassVar = {"in": GPIO.IN, "out": GPIO.OUT}
+    VALUES: ClassVar = {"low": GPIO.LOW, "high": GPIO.HIGH}
 
     def __init__(self) -> None:
-        print_system_msg("Initialising RPiController...")
+        print(system_msg("Initialising RPiController..."))
         self._running = False
         self._nn: NeuralNetwork
 
@@ -26,11 +26,11 @@ class RPiController:
         return _app
 
     def _setup(self, board_mode: str) -> None:
-        print_system_msg("Running setup...")
+        print(system_msg("Running setup..."))
         GPIO.setmode(self.BOARD_MODES[board_mode])
 
     def _cleanup(self) -> None:
-        print_system_msg("Cleaning up GPIO...")
+        print(system_msg("Cleaning up GPIO..."))
         GPIO.cleanup()
 
     def _setup_pin(self, pin_number: int, mode: str, initial: str) -> int:
@@ -45,24 +45,24 @@ class RPiController:
         return pwm_pin
 
     def _main(self) -> None:
-        print_system_msg("Ready to run!")
+        print(system_msg("Ready to run!"))
 
-    def _train_nn(self, inputs: List[float], outputs: List[float]) -> None:
+    def _train_nn(self, inputs: list[float], outputs: list[float]) -> None:
         errors = self._nn.train(inputs, outputs)
-        print_system_msg(f"\rRMS: {RPiController.calculate_rms(errors)}", flush=True, end="")
+        print(system_msg(f"\rRMS: {RPiController.calculate_rms(errors)}", flush=True, end=""))
 
     def run(self) -> None:
         self._running = True
         try:
-            print_system_msg("Running program!")
+            print(system_msg("Running program!"))
             self._main()
         except KeyboardInterrupt:
-            print_system_msg("Shutting down!")
+            print(system_msg("Shutting down!"))
             self._running = False
             self._cleanup()
 
     @staticmethod
-    def calculate_rms(errors):
+    def calculate_rms(errors: list[float]) -> float:
         squared = np.square(errors)
         mean = np.average(squared)
         rms = np.sqrt(mean)

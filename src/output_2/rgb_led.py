@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO  # type: ignore
 from neural_network.neural_network import NeuralNetwork
 
 from src.base.rpi_controller import RPiController
-from src.helpers.general import print_system_msg
+from src.helpers.general import system_msg
 
 COLOR = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0xFF00FF, 0x00FFFF]
 
@@ -60,26 +60,26 @@ class RGBLED(RPiController):
             random_choice = np.random.randint(low=0, high=len(inputs))
             self._train_nn(inputs[random_choice], outputs[random_choice])
 
-        print_system_msg(f"\nTraining complete!")
+        print(system_msg("\nTraining complete!"))
         while self._running:
             r_val = int(input("Enter R: "))
             g_val = int(input("Enter G: "))
             b_val = int(input("Enter B: "))
             vals = self._nn.feedforward([r_val, g_val, b_val])
-            self.setColor(vals)
+            self.set_colour(vals)
             time.sleep(0.5)
 
     @staticmethod
-    def map_val(x, in_min, in_max, out_min, out_max):
+    def map_val(x: float, in_min: float, in_max: float, out_min: float, out_max: float) -> float:
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-    def setColor(self, vals):
-        R_val = RGBLED.map_val(vals[0], 0, 1, 0, 100)
-        G_val = RGBLED.map_val(vals[1], 0, 1, 0, 100)
-        B_val = RGBLED.map_val(vals[2], 0, 1, 0, 100)
+    def set_colour(self, vals: list[float]) -> None:
+        r_val = RGBLED.map_val(vals[0], 0, 1, 0, 100)
+        g_val = RGBLED.map_val(vals[1], 0, 1, 0, 100)
+        b_val = RGBLED.map_val(vals[2], 0, 1, 0, 100)
 
-        self._p_r.ChangeDutyCycle(R_val)
-        self._p_g.ChangeDutyCycle(G_val)
-        self._p_b.ChangeDutyCycle(B_val)
+        self._p_r.ChangeDutyCycle(r_val)
+        self._p_g.ChangeDutyCycle(g_val)
+        self._p_b.ChangeDutyCycle(b_val)
 
-        print_system_msg(f"color_msg: R_val = {R_val}, G_val = {G_val}, B_val = {B_val}")
+        print(system_msg(f"color_msg: R_val = {r_val}, G_val = {g_val}, B_val = {b_val}"))
