@@ -9,10 +9,10 @@ neural-network = {editable = true, git = "https://github.com/javidahmed64592/neu
 numpy = "*"
 
 [dev-packages]
-isort = "*"
-black = "*"
-flake8 = "*"
-mypy = "*"
+ruff = "*"
 
 [requires]
 python_version = "3.11"
+
+[scripts]
+ruff = "python -m ruff check ."
