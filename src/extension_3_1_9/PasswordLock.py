@@ -81,12 +81,12 @@ def loop():
                     # LCD1602.clear()
                     # LCD1602.write(3, 0, "WRONG KEY!")
                     # LCD1602.write(0, 1, "please try again")
-                    print(f"WRONG: {pressed_keys}")
+                    print(f"WRONG: {testword}")
                 else:
                     # LCD1602.clear()
                     # LCD1602.write(4, 0, "CORRECT!")
                     # LCD1602.write(2, 1, "welcome back")
-                    print(f"CORRECT: {pressed_keys}")
+                    print(f"CORRECT: {testword}")
             keyIndex = keyIndex % LENS
 
         last_key_pressed = pressed_keys
