@@ -2,7 +2,7 @@
 
 import time
 
-import LCD1602
+# import LCD1602
 import RPi.GPIO as GPIO
 
 
@@ -50,15 +50,17 @@ def setup():
     keys = ["1", "2", "3", "A", "4", "5", "6", "B", "7", "8", "9", "C", "*", "0", "#", "D"]
     keypad = Keypad(rowsPins, colsPins, keys)
     last_key_pressed = []
-    LCD1602.init(0x27, 1)  # init(slave address, background light)
-    LCD1602.clear()
-    LCD1602.write(0, 0, "WELCOME!")
-    LCD1602.write(2, 1, "Enter password")
+    # LCD1602.init(0x27, 1)  # init(slave address, background light)
+    # LCD1602.clear()
+    # LCD1602.write(0, 0, "WELCOME!")
+    # LCD1602.write(2, 1, "Enter password")
+    print("WELCOME")
+    print("Enter password:")
     time.sleep(2)
 
 
 def destroy():
-    LCD1602.clear()
+    # LCD1602.clear()
     GPIO.cleanup()
 
 
@@ -69,20 +71,22 @@ def loop():
     while True:
         pressed_keys = keypad.read()
         if len(pressed_keys) != 0 and last_key_pressed != pressed_keys:
-            LCD1602.clear()
-            LCD1602.write(0, 0, "Enter password:")
-            LCD1602.write(15 - keyIndex, 1, pressed_keys)
+            # LCD1602.clear()
+            # LCD1602.write(0, 0, "Enter password:")
+            # LCD1602.write(15 - keyIndex, 1, pressed_keys)
             testword[keyIndex] = pressed_keys
             keyIndex += 1
             if keyIndex is LENS:
                 if check() == 0:
-                    LCD1602.clear()
-                    LCD1602.write(3, 0, "WRONG KEY!")
-                    LCD1602.write(0, 1, "please try again")
+                    # LCD1602.clear()
+                    # LCD1602.write(3, 0, "WRONG KEY!")
+                    # LCD1602.write(0, 1, "please try again")
+                    print("WRONG")
                 else:
-                    LCD1602.clear()
-                    LCD1602.write(4, 0, "CORRECT!")
-                    LCD1602.write(2, 1, "welcome back")
+                    # LCD1602.clear()
+                    # LCD1602.write(4, 0, "CORRECT!")
+                    # LCD1602.write(2, 1, "welcome back")
+                    print("CORRECT")
             keyIndex = keyIndex % LENS
 
         last_key_pressed = pressed_keys
