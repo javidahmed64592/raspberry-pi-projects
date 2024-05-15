@@ -18,7 +18,7 @@ class Button(RPiController):
         _app = cast(Button, cls.create("bcm"))
         _app._button_pin = button_pin
 
-        _app._led_pin = _app._setup_pin(pin_number=led_pin, mode="out", value="high")
+        _app._led_pin = _app._setup_pin(pin_number=led_pin, mode="out", initial="high")
         _app._button_pin = _app._setup_pin(pin_number=button_pin, mode="in")
 
         return _app
