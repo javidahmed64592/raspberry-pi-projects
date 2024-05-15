@@ -28,10 +28,10 @@ class Button(RPiController):
         super()._cleanup()
 
     def _main(self) -> None:
-        self._add_event_detect(pin_number=self._button_pin, mode="falling", callback=self.switch_led)
+        def switch_led(ev=None) -> None:
+            self._led_status = not self._led_status
+            self._output_pin(pin_number=self._led_pin, value=self._led_status)
+
+        self._add_event_detect(pin_number=self._button_pin, mode="falling", callback=switch_led)
         while True:
             time.sleep(1)
-
-    def switch_led(self, ev=None) -> None:
-        self._led_status = not self._led_status
-        self._output_pin(pin_number=self._led_pin, value=self._led_status)
