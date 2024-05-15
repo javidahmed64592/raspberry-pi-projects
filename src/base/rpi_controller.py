@@ -43,6 +43,7 @@ class RPiController:
         return pin_number
 
     def _output_pin(self, pin_number: int, value: str) -> int:
+        print(system_msg(f"Setting output of {pin_number} to {value}"))
         GPIO.output(pin_number, self.VALUES[value])
         return pin_number
 

@@ -4,6 +4,7 @@ import time
 from typing import cast
 
 from src.base.rpi_controller import RPiController
+from src.helpers.general import system_msg
 
 
 class Button(RPiController):
@@ -29,6 +30,7 @@ class Button(RPiController):
 
     def _main(self) -> None:
         def switch_led(ev=None) -> None:
+            print(system_msg(f"Switching LED {not self._led_status}"))
             self._led_status = not self._led_status
             self._output_pin(pin_number=self._led_pin, value=self._led_status)
 
