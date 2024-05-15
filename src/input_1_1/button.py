@@ -32,7 +32,8 @@ class Button(RPiController):
         def switch_led(ev=None) -> None:
             print(system_msg(f"Switching LED {not self._led_status}"))
             self._led_status = not self._led_status
-            self._output_pin(pin_number=self._led_pin, value=self._led_status)
+            value = ["low", "high"][self._led_status]
+            self._output_pin(pin_number=self._led_pin, value=value)
 
         self._add_event_detect(pin_number=self._button_pin, mode="falling", callback=switch_led)
         while True:
