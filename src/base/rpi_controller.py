@@ -13,7 +13,7 @@ from src.helpers.general import system_msg
 class RPiController:
     BOARD_MODES: ClassVar = {"bcm": GPIO.BCM, "board": GPIO.BOARD}
     PIN_MODES: ClassVar = {"in": GPIO.IN, "out": GPIO.OUT}
-    VALUES: ClassVar = {"low": GPIO.LOW, "high": GPIO.HIGH, "none": -1}
+    VALUES: ClassVar = {"low": GPIO.LOW, "high": GPIO.HIGH}
     EDGE_MODES: ClassVar = {"falling": GPIO.FALLING}
 
     def __init__(self) -> None:
@@ -35,8 +35,11 @@ class RPiController:
         print(system_msg("Cleaning up GPIO..."))
         GPIO.cleanup()
 
-    def _setup_pin(self, pin_number: int, mode: str, initial: str) -> int:
-        GPIO.setup(pin_number, self.PIN_MODES[mode], initial=self.VALUES[initial])
+    def _setup_pin(self, pin_number: int, mode: str, initial: str | None = None) -> int:
+        if initial:
+            GPIO.setup(pin_number, self.PIN_MODES[mode], initial=self.VALUES[initial])
+        else:
+            GPIO.setup(pin_number, self.PIN_MODES[mode])
         return pin_number
 
     def _output_pin(self, pin_number: int, value: str) -> int:
