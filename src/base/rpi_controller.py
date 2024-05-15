@@ -13,7 +13,7 @@ from src.helpers.general import system_msg
 class RPiController:
     BOARD_MODES: ClassVar = {"bcm": GPIO.BCM, "board": GPIO.BOARD}
     PIN_MODES: ClassVar = {"in": GPIO.IN, "out": GPIO.OUT}
-    VALUES: ClassVar = {"low": GPIO.LOW, "high": GPIO.HIGH}
+    VALUES: ClassVar = {"low": GPIO.LOW, "high": GPIO.HIGH, "none": -1}
     EDGE_MODES: ClassVar = {"falling": GPIO.FALLING}
 
     def __init__(self) -> None:
