@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import ClassVar
 
 import numpy as np
@@ -13,6 +14,7 @@ class RPiController:
     BOARD_MODES: ClassVar = {"bcm": GPIO.BCM, "board": GPIO.BOARD}
     PIN_MODES: ClassVar = {"in": GPIO.IN, "out": GPIO.OUT}
     VALUES: ClassVar = {"low": GPIO.LOW, "high": GPIO.HIGH}
+    EDGE_MODES: ClassVar = {"falling": GPIO.FALLING}
 
     def __init__(self) -> None:
         print(system_msg("Initialising RPiController..."))
@@ -37,12 +39,16 @@ class RPiController:
         GPIO.setup(pin_number, self.PIN_MODES[mode], initial=self.VALUES[initial])
         return pin_number
 
-    def _output_pin(self, pin_number: int, value: str) -> None:
+    def _output_pin(self, pin_number: int, value: str) -> int:
         GPIO.output(pin_number, self.VALUES[value])
+        return pin_number
 
     def _pwm_pin(self, pin_number: int, frequency: int) -> GPIO.PWM:
         pwm_pin = GPIO.PWM(pin_number, frequency)
         return pwm_pin
+
+    def _add_event_detect(self, pin_number: int, mode: str, callback: Callable) -> None:
+        GPIO.add_event_detect(pin_number, self.EDGE_MODES[mode], callback=callback)
 
     def _main(self) -> None:
         print(system_msg("Ready to run!"))
