@@ -123,7 +123,7 @@ def readDht11():
 def main():
     for pin in tempPins + humPins:
         GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(pin, GPIO.HIGH)
+        GPIO.output(pin, GPIO.LOW)
     while True:
         result = readDht11()
         if result:
@@ -133,6 +133,8 @@ def main():
 
 
 def destroy():
+    for pin in tempPins + humPins:
+        GPIO.output(pin, GPIO.HIGH)
     GPIO.cleanup()
 
 
